@@ -7,5 +7,10 @@ export interface IUser {
     name: string;
     email: string;
     password: string;
-    address: string;
-}
+    address: Address[];
+    roles: string;
+    avatar: string;
+    resetPasswordToken: string;
+    resetPasswordTime: Date;
+}  
+

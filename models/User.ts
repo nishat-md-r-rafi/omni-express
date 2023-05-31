@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 const bcrypt   = require('bcrypt');
 const jwt = require('jwt');
+import { IUser } from "../interfaces/models/user";
+
+// interface IUserModel extends IUser {
+    
+// };
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -11,11 +16,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please enter your email!"]  
     },
-    password: {
-        type: String,
-        required: [true, "Please enter your password!"],
-        minLength: [4, "Password should be greater than 4 characters"],
-        select: false,
+    authentication:{
+        password: {
+            type: String,
+            required: [true, "Please enter your password!"],
+            minLength: [4, "Password should be greater than 4 characters"],
+            select: false,
+        },
+        salt: {type: String, select:false},
+        sessionToken: {type: String, select:false},
     },
     address: [
         {
@@ -67,4 +76,22 @@ userSchema.methods.comparePassword = async function (enteredPassword:String) {
 //     }
 // }
 
-module.exports = mongoose.model('User', userSchema)
+export const UserModel = mongoose.model('User', userSchema);
+
+export const getUsers = () => UserModel.find();
+export const getUserByEmail = (email:string) => UserModel.find({email})
+export const deleteUserById = (id:string) => UserModel.findOneAndDelete({_id:id});
+export const createUser = (values:Record<string, any>) => new UserModel(values).save()
+
+
+
+
+
+
+
+
+
+
+
+
+
