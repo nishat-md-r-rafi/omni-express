@@ -1,5 +1,6 @@
 import express from "express";
 const mongoose = require("mongoose");
+import router from "./routes/index"
 
 const app = express();
 
@@ -18,4 +19,6 @@ mongoose.connect(mongoURI, {
 
 app.listen(PORT, () => {  
     console.log("listening on port", PORT)
-} )
+});
+
+app.use('/', router())

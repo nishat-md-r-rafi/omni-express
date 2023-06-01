@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const bcrypt   = require('bcrypt');
-const jwt = require('jwt');
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import { IUser } from "../interfaces/models/user";
 
 // interface IUserModel extends IUser {
@@ -58,14 +58,14 @@ const userSchema = new mongoose.Schema({
 
 // jwt token generation
 userSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({_id: this._id}, process.env.JWT_SECRET_KEY, {
+  const token = jwt.sign({_id: this._id}, "mySecretKey", {
     expiresIn: process.env.JWT_EXPIRES
   });
   return token;
 }
 
 // compare Password
-userSchema.methods.comparePassword = async function (enteredPassword:String) {
+userSchema.methods.comparePassword = async function (enteredPassword:string) {
     return await bcrypt.compare(enteredPassword, this.password)  
 }
 
